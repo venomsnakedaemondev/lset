@@ -10,6 +10,7 @@ YELLOW = "\033[1;33m"
 CYAN = "\033[0;36m"
 RED = "\033[0;31m"
 RESET = "\033[0m"
+BOLD = "\033[1m"
 
 # Paquetes a instalar (se extraen de un archivo JSON o se definen aquí)
 packages_json = '''{
@@ -78,8 +79,10 @@ def install_aur_packages(packages, message):
             print(f"{YELLOW}Instalando {package} desde AUR...{RESET}")
             if not run_command(f"yay -S --noconfirm {package}") and not run_command(f"paru -S --noconfirm {package}"):
                 print(f"{RED}❌ Error instalando {package} desde AUR.{RESET}")
+            else:
+                print(f"{GREEN}✔️ {package} instalado correctamente.{RESET}")
         else:
-            print(f"{GREEN}{package} ya está instalado.{RESET}")
+            print(f"{GREEN}✔️ {package} ya está instalado.{RESET}")
 
 # Verificar si yay o paru están instalados
 def check_yay_paru():
@@ -95,6 +98,6 @@ def install():
     aur_packages = packages["instalacion_aur"]
     install_aur_packages(aur_packages, "📦 Instalando paquetes AUR...")
 
-    print(f"{GREEN}🎉 ¡Todas las instalaciones se completaron con éxito!{RESET}")
-
+    print(f"\n{GREEN}🎉 ¡Todas las instalaciones se completaron con éxito!{RESET}")
+    print(f"{CYAN}¡Disfruta de tu sistema actualizado y personalizado!{RESET}")
 
