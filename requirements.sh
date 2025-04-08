@@ -14,7 +14,7 @@ RESET="\033[0m"
 spinner() {
     local pid=$!
     local delay=0.1
-    local spinstr='|/-\'
+    local spinstr='|/-\' 
     while kill -0 $pid 2>/dev/null; do
         local temp=${spinstr#?}
         printf " [%c]  " "$spinstr"
@@ -34,5 +34,28 @@ echo -e "${YELLOW}📦 Instalando paquetes base...${RESET}"
 sleep 1
 (sudo pacman -S python python-colorama git jq zsh --noconfirm) & spinner
 
-# 🧰 Instalar yay
-echo -e "${CYAN}⬇
+# 🧰 Comprobar si yay y paru están instalados
+if ! command -v yay &>/dev/null; then
+    echo -e "${CYAN}⬇ Instalando yay...${RESET}"
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf yay
+    echo -e "${GREEN}🎉 Yay ha sido instalado correctamente.${RESET}"
+else
+    echo -e "${GREEN}🎉 Yay ya está instalado.${RESET}"
+fi
+
+if ! command -v paru &>/dev/null; then
+    echo -e "${CYAN}⬇ Instalando paru...${RESET}"
+    git clone https://aur.archlinux.org/paru.git
+    cd paru
+    makepkg -si --noconfirm
+    cd ..
+    rm -rf paru
+    echo -e "${GREEN}🎉 Paru ha sido instalado correctamente.${RESET}"
+else
+    echo -e "${GREEN}🎉 Paru ya está instalado.${RESET}"
+fi
+# 🛠️ Instalación de paquetes adicionales
