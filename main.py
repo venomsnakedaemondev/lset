@@ -5,7 +5,7 @@ from datetime import datetime
 import platform
 import argparse
 import logging
-
+from packager.menu import menu
 # Colores ANSI
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -40,13 +40,6 @@ def log_event(event, level="info"):
         logging.warning(event)
     elif level == "error":
         logging.error(event)
-
-def check_permissions():
-    """Verifica que el programa se ejecute como root"""
-    if os.geteuid() != 1:
-        print(f"{RED}❌ Por favor, ejecuta el programa sin permisos administrativos (sudo).{RESET}")
-        log_event("El programa se ejecutó con permisos administrativos.", level="error")
-        exit(1)
 
 def check_platform():
     """Verifica que el sistema operativo sea compatible"""
@@ -111,28 +104,6 @@ def confirm_action(message):
         return False
     return True
 
-def menu():
-    """Muestra el menú interactivo"""
-    while True:
-        print(f"""{BLUE}
-        [1] Instalar dependencias
-        [2] Ver documentación
-        [3] Salir
-        {RESET}""")
-        choice = input("Elige una opción: ")
-        if choice == "1":
-            if confirm_action("¿Estás seguro de que deseas instalar las dependencias?"):
-                install_dependencies()
-        elif choice == "2":
-            print(f"{CYAN}📖 Aquí está la documentación...{RESET}")
-            log_event("El usuario revisó la documentación.")
-        elif choice == "3":
-            print(f"{YELLOW}👋 Adiós!{RESET}")
-            log_event("El usuario salió del programa.")
-            exit(0)
-        else:
-            print(f"{RED}❌ Opción no válida. Intenta de nuevo.{RESET}")
-
 def show_help():
     """Muestra la ayuda del programa"""
     print(f"""{CYAN}
@@ -144,7 +115,6 @@ def show_help():
 
 def start():
     """Inicia el programa"""
-    check_permissions()
     check_platform()
     clear_screen()
     banner()
