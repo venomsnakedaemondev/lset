@@ -6,6 +6,7 @@ import platform
 import argparse
 import logging
 from packager.menu import menu
+
 # Colores ANSI
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -59,14 +60,14 @@ def check_files_exist():
             exit(1)
 
 def run_command(command):
-    """Ejecuta un comando en el sistema"""
+    """Ejecuta un comando en el sistema y captura la salida y el error"""
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         print(f"{GREEN}✅ Comando ejecutado: {command}{RESET}")
         log_event(f"Comando ejecutado: {command}")
         return result.stdout
     except subprocess.CalledProcessError as e:
-        print(f"{RED}❌ Error ejecutando: {command}\n{e}{RESET}")
+        print(f"{RED}❌ Error ejecutando: {command}\nSalida estándar:\n{e.stdout}\nError:\n{e.stderr}{RESET}")
         log_event(f"Error ejecutando: {command} - {e}", level="error")
         exit(1)
 
@@ -75,8 +76,13 @@ def install_dependencies():
     print(f"{CYAN}⏳ Instalando dependencias...{RESET}")
     try:
         check_files_exist()
+        
+        # Verificación y corrección de permisos
+        if not os.access("requirements.sh", os.X_OK):
+            print(f"{YELLOW}Ajustando permisos de ejecución para requirements.sh...{RESET}")
+            run_command("chmod +x requirements.sh")
+        
         run_command("cp .zshrc ~ && cp .p10k.zsh ~")
-        run_command("chmod +x requirements.sh")
         run_command("sh requirements.sh")
         print(f"{GREEN}✅ Todos los requisitos han sido instalados.{RESET}")
         log_event("Dependencias instaladas correctamente.")

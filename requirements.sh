@@ -19,7 +19,7 @@ print_progress() {
     local remaining=$(( length - completed ))
 
     # Crear la barra de progreso
-    printf "\r${CYAN}["
+    printf "\r${CYAN}[" 
     for ((i=0; i<completed; i++)); do
         printf "="
     done
@@ -89,6 +89,22 @@ install_yay_paru() {
     fi
 }
 
+# Función para verificar si jq está instalado
+check_jq_installed() {
+    if ! command -v jq &>/dev/null; then
+        echo -e "${RED}❌ jq no está instalado. Instalando jq...${RESET}"
+        sudo pacman -S --noconfirm jq
+    fi
+}
+
+# Función para verificar si git está instalado
+check_git_installed() {
+    if ! command -v git &>/dev/null; then
+        echo -e "${RED}❌ git no está instalado. Instalando git...${RESET}"
+        sudo pacman -S --noconfirm git
+    fi
+}
+
 # Actualización del sistema
 echo -e "${CYAN}Actualizando el sistema...${RESET}"
 (sudo pacman -Syu --noconfirm) & general_spinner
@@ -96,10 +112,13 @@ echo -e "${CYAN}Actualizando el sistema...${RESET}"
 # Instalación de paquetes base
 install_packages "python python-colorama git jq zsh"
 
-# Instalación de yay o paru
+# Verificar y instalar yay/paru si es necesario
 install_yay_paru
 
-# Instalación de paquetes AUR
+# Verificar si jq está instalado antes de procesar el JSON
+check_jq_installed
+
+# Instalación de paquetes AUR desde JSON
 if [[ -n "$json" ]]; then
     install_packages "$(echo "$json" | jq -r '.instalacion_aur | .[]' | sort -u)"
 fi
