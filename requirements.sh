@@ -1,45 +1,38 @@
-sudo pacman -Syu --noconfirm 
-sudo pacman -S python python-colorama git jq zsh  --noconfirm
+#!/usr/bin/env bash
 
-set -e  # Detener script si ocurre algún error
+set -e  # Salir si ocurre un error
+trap 'echo -e "\n${RED}❌ Error durante la ejecución. Abortando.${RESET}"; exit 1' ERR
 
 # Colores ANSI
 GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 CYAN="\033[0;36m"
+RED="\033[0;31m"
 RESET="\033[0m"
 
+# Spinner animado
+spinner() {
+    local pid=$!
+    local delay=0.1
+    local spinstr='|/-\'
+    while kill -0 $pid 2>/dev/null; do
+        local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf " ${GREEN}✔️ Listo${RESET}\n"
+}
+
+# 🔄 Actualización del sistema
 echo -e "${CYAN}🔄 Actualizando el sistema...${RESET}"
-sudo pacman -Syu --noconfirm
+(sudo pacman -Syu --noconfirm) & spinner
 
-sleep 1
+# 📦 Instalación de paquetes base
 echo -e "${YELLOW}📦 Instalando paquetes base...${RESET}"
-sleep 2
+sleep 1
+(sudo pacman -S python python-colorama git jq zsh --noconfirm) & spinner
 
-# Instalar yay
-echo -e "${CYAN}⬇️ Clonando yay desde AUR...${RESET}"
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si --noconfirm
-cd ..
-rm -rf yay
-echo -e "${GREEN}✅ yay instalado correctamente.${RESET}"
-
-# Instalar paru
-echo -e "${CYAN}⬇️ Clonando paru desde AUR...${RESET}"
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si --noconfirm
-cd ..
-rm -rf paru
-echo -e "${GREEN}✅ paru instalado correctamente.${RESET}"
-
-echo -e "${GREEN}🎉 Todo listo. Las herramientas base han sido instaladas.${RESET}"
-
-sudo su c
-hsh -s /bin/zsh
-exit 
-echo $USER
-chsh -s /bin/zsh
-
-
+# 🧰 Instalar yay
+echo -e "${CYAN}⬇
