@@ -55,7 +55,7 @@ def check_platform():
 
 def check_files_exist():
     """Verifica que los archivos necesarios existan"""
-    files = ["zshrc", ".p10k.zsh", "requirements.sh"]
+    files = [".p10k.zsh", "requirements.sh"]
     for file in files:
         if not os.path.exists(file):
             print(f"{RED}❌ Archivo no encontrado: {file}{RESET}")
