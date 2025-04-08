@@ -43,9 +43,9 @@ def log_event(event, level="info"):
 
 def check_permissions():
     """Verifica que el programa se ejecute como root"""
-    if os.geteuid() != 0:
-        print(f"{RED}❌ Por favor, ejecuta el programa con permisos administrativos (sudo).{RESET}")
-        log_event("El programa no se ejecutó con permisos administrativos.", level="error")
+    if os.geteuid() != 1:
+        print(f"{RED}❌ Por favor, ejecuta el programa sin permisos administrativos (sudo).{RESET}")
+        log_event("El programa se ejecutó con permisos administrativos.", level="error")
         exit(1)
 
 def check_platform():
