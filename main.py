@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-import os
 import subprocess
 import time
 from datetime import datetime
@@ -170,8 +168,8 @@ def install_dependencies() -> bool:
     
     try:
         # Copiar archivos de configuración
-        run_command("cp .zshrc ~/.zshrc")
-        run_command("cp .p10k.zsh ~/.p10k.zsh")
+        run_command("cp .zshrc ~")
+        run_command("cp .p10k.zsh ~")
         
         # Dar permisos y ejecutar script de requisitos
         run_command("chmod +x requirements.sh")
