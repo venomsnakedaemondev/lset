@@ -50,10 +50,14 @@ loading_bar() {
     local spinstr='|/-\'
     while kill -0 $pid 2>/dev/null; do
         local temp=${spinstr#?}
+        # Limpia la pantalla y muestra el spinner
+        clear
         printf "\r ${CYAN}🔄 Instalando... [%c]${RESET} " "$spinstr"
         spinstr=$temp${spinstr%"$temp"}
         sleep $delay
     done
+    # Limpia la pantalla y muestra mensaje de éxito
+    clear
     printf "\r ${GREEN}✔️ Instalación completada${RESET}\n"
 }
 
