@@ -1,6 +1,6 @@
 from colorama import Fore, Style, init
 from os import system
-
+from packager.scripts.install import install
 # Initialize colorama
 init(autoreset=True)
 
@@ -20,6 +20,7 @@ def execute_option(option):
         system("clear")
         print(Fore.GREEN + "All base requirements have been installed.")
         print(Style.RESET_ALL)
+        install()
     elif option == "2":
         print(Fore.GREEN + "You selected Option 2")
     elif option == "3":
@@ -35,6 +36,3 @@ def menu():
             execute_option(option)
             break
         execute_option(option)
-
-if __name__ == "__main__":
-    menu()
