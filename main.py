@@ -8,6 +8,7 @@ import shlex
 from logging.handlers import RotatingFileHandler
 from typing import Optional, Union, List
 from packager.menu import menu
+import os
 
 # Colores ANSI
 RED = "\033[91m"
