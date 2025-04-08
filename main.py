@@ -163,14 +163,13 @@ def install_dependencies() -> bool:
     """
     print(f"{CYAN}⏳ Instalando dependencias...{RESET}")
     
-    required_files = [".zshrc", ".p10k.zsh", "requirements.sh"]
+    required_files = [ "requirements.sh"]
     if not check_files_exist(required_files):
         return False
     
     try:
         # Copiar archivos de configuración
-        run_command("cp .zshrc ~")
-        run_command("cp .p10k.zsh ~")
+        #run_command("cp /.p10k.zsh ~")
         
         # Dar permisos y ejecutar script de requisitos
         run_command("chmod +x requirements.sh")
