@@ -115,7 +115,7 @@ echo -e "${CYAN}🔄 Actualizando el sistema...${RESET}"
 (sudo pacman -Syu --noconfirm) & spinner
 
 # 📦 Instalación de paquetes base
-install_packages "python python-colorama git jq zsh" "📦 Instalando paquetes base..."
+install_packages "python python-colorama git jq zsh zoxide fzf" "📦 Instalando paquetes base..."
 
 # 🧰 Comprobar si yay y paru están instalados
 if ! command -v yay &>/dev/null; then
