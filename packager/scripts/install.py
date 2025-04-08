@@ -118,3 +118,4 @@ def install():
     install_aur_packages(aur_packages, "📦 Instalando paquetes AUR...")
     print(f"\n{GREEN}🎉 ¡Todas las instalaciones se completaron con éxito!{RESET}")
     print(f"{CYAN}¡Disfruta de tu sistema actualizado y personalizado!{RESET}")
+ 
