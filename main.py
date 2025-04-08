@@ -9,8 +9,15 @@ def start():
     system('chmod +x requirements.sh')
     # Install the requirements
     system('./requirements.sh')
+    system("sleep 2")
     print("All requirements have been installed.")
+    system("sleep 2")
+    system("cls")
+    print("Welcome to the packager!")
+    system("sleep 2")
+    system("cls")
 def main():
+    start()
     menu()
 
 if __name__ == "__main__":
