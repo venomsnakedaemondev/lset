@@ -1,38 +1,39 @@
 from colorama import Fore, Style, init
 from os import system
 from packager.scripts.install import install
-# Initialize colorama
+
+# Inicializa colorama
 init(autoreset=True)
 
 def show_menu():
-    print(Fore.CYAN + "========== Main Menu ==========")
-    print(Fore.YELLOW + "1. instalation base")
-    print(Fore.YELLOW + "2. Option 2")
-    print(Fore.YELLOW + "3. Exit")
-    print(Fore.CYAN + "===============================")
+    print(Fore.CYAN + "========== Menú Principal ==========")
+    print(Fore.YELLOW + "1. Instalación Base")
+    print(Fore.YELLOW + "2. Opción 2")
+    print(Fore.YELLOW + "3. Salir")
+    print(Fore.CYAN + "====================================")
 
 def execute_option(option):
     if option == "1":
-        print(Fore.GREEN + "You selected Option 1")
-        system("chmod +x packager/scripts/base.sh")
-        system('sh packager/scripts/base.sh')
-        system("sleep 2")
-        system("clear")
-        print(Fore.GREEN + "All base requirements have been installed.")
-        print(Style.RESET_ALL)
+        print(Fore.GREEN + "Has seleccionado la Opción 1")
+        try:
+            system("chmod +x packager/scripts/base.sh")
+            system('sh packager/scripts/base.sh')
+        except Exception as e:
+            print(Fore.RED + f"Error al ejecutar base.sh: {e}")
+            return
+        print(Fore.GREEN + "Todos los requisitos base han sido instalados.")
         install()
     elif option == "2":
-        print(Fore.GREEN + "You selected Option 2")
+        print(Fore.GREEN + "Has seleccionado la Opción 2")
     elif option == "3":
-        print(Fore.RED + "Exiting the program. Goodbye!")
+        print(Fore.RED + "Saliendo del programa. ¡Adiós!")
     else:
-        print(Fore.RED + "Invalid option. Please try again.")
+        print(Fore.RED + "Opción no válida. Por favor, intenta nuevamente.")
 
 def menu():
     while True:
         show_menu()
-        option = input(Fore.MAGENTA + "Choose an option: ")
-        if option == "3":
-            execute_option(option)
-            break
+        option = input(Fore.MAGENTA + "Selecciona una opción: ")
         execute_option(option)
+        if option == "3":
+            break
