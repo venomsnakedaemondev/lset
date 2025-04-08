@@ -1,5 +1,5 @@
 sudo pacman -Syu --noconfirm 
-sudo pacman -S python python-colorama git jq --noconfirm
+sudo pacman -S python python-colorama git jq zsh  --noconfirm
 
 set -e  # Detener script si ocurre algún error
 
@@ -35,4 +35,11 @@ rm -rf paru
 echo -e "${GREEN}✅ paru instalado correctamente.${RESET}"
 
 echo -e "${GREEN}🎉 Todo listo. Las herramientas base han sido instaladas.${RESET}"
+
+sudo su c
+hsh -s /bin/zsh
+exit 
+echo $USER
+chsh -s /bin/zsh
+
 
