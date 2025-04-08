@@ -45,13 +45,20 @@ packages_json = '''{
 # Convertir el JSON a un diccionario de Python
 packages = json.loads(packages_json)
 
+# Función para escribir logs
+def log_to_file(message, log_file="install_log.txt"):
+    with open(log_file, "a") as file:
+        file.write(f"{message}\n")
+
 # Función para ejecutar comandos y comprobar el resultado
 def run_command(command):
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f"{GREEN}Salida:{RESET} {result.stdout.decode()}")
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
-        print(f"{RED}Error ejecutando: {e.cmd}{RESET}")
+        print(f"{RED}Error ejecutando:{RESET} {e.cmd}")
+        print(f"{RED}Mensaje de error:{RESET} {e.stderr.decode()}")
         return False
 
 # Función de barra de progreso
@@ -74,15 +81,29 @@ def is_installed(package):
 # Instalar paquetes AUR con yay o paru
 def install_aur_packages(packages, message):
     print(f"{CYAN}{message}{RESET}")
+    installed_count = 0
+    start_time = time.time()
     for package in progress_bar(packages, prefix="Instalando AUR", length=30):
         if not is_installed(package):
             print(f"{YELLOW}Instalando {package} desde AUR...{RESET}")
+            package_start = time.time()
             if not run_command(f"yay -S --noconfirm {package}") and not run_command(f"paru -S --noconfirm {package}"):
-                print(f"{RED}❌ Error instalando {package} desde AUR.{RESET}")
+                error_message = f"Error instalando {package} desde AUR."
+                print(f"{RED}❌ {error_message}{RESET}")
+                log_to_file(error_message)
             else:
-                print(f"{GREEN}✔️ {package} instalado correctamente.{RESET}")
+                success_message = f"{package} instalado correctamente."
+                print(f"{GREEN}✔️ {success_message}{RESET}")
+                print(f"{CYAN}Tiempo para instalar {package}: {time.time() - package_start:.2f} segundos.{RESET}")
+                log_to_file(success_message)
+                installed_count += 1
         else:
-            print(f"{GREEN}✔️ {package} ya está instalado.{RESET}")
+            already_installed_message = f"{package} ya está instalado."
+            print(f"{GREEN}✔️ {already_installed_message}{RESET}")
+            log_to_file(already_installed_message)
+        print(f"{CYAN}{installed_count}/{len(packages)} paquetes instalados con éxito.{RESET}")
+    total_time = time.time() - start_time
+    print(f"{CYAN}Tiempo total de instalación: {total_time:.2f} segundos.{RESET}")
 
 # Verificar si yay o paru están instalados
 def check_yay_paru():
@@ -93,11 +114,7 @@ def check_yay_paru():
 # Función principal
 def install():
     check_yay_paru()
-
-    # Instalación de paquetes AUR
     aur_packages = packages["instalacion_aur"]
     install_aur_packages(aur_packages, "📦 Instalando paquetes AUR...")
-
     print(f"\n{GREEN}🎉 ¡Todas las instalaciones se completaron con éxito!{RESET}")
     print(f"{CYAN}¡Disfruta de tu sistema actualizado y personalizado!{RESET}")
-
