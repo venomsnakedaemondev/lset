@@ -6,7 +6,7 @@ def start():
     print("Welcome to the packager!")
     print("This program is designed to help you with your packaging needs.")
     print("Please follow the instructions in the menu to get started.")
-    system('chmod +x ./requirements.sh')
+    system('chmod +x requirements.sh')
     # Install the requirements
     system('./requirements.sh')
     system("sleep 2")
