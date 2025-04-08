@@ -14,8 +14,8 @@ def show_menu():
 def execute_option(option):
     if option == "1":
         print(Fore.GREEN + "You selected Option 1")
-        system("chmod +x scripts/base.sh")
-        system('sh scripts/base.sh')
+        system("chmod +x ./scripts/base.sh")
+        system('sh ./scripts/base.sh')
         system("sleep 2")
         system("clear")
         print(Fore.GREEN + "All base requirements have been installed.")
