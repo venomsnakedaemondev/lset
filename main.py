@@ -1,0 +1,17 @@
+from packager.menu import  menu
+from os import system
+
+def start():
+    system("cls")
+    print("Welcome to the packager!")
+    print("This program is designed to help you with your packaging needs.")
+    print("Please follow the instructions in the menu to get started.")
+    system('chmod +x requirements.sh')
+    # Install the requirements
+    system('./requirements.sh')
+    print("All requirements have been installed.")
+def main():
+    menu()
+
+if __name__ == "__main__":
+    main()
