@@ -115,7 +115,7 @@ install_packages() {
         update_progress
         if ! is_installed "$package"; then
             echo -e "${BLUE}Instalando paquete ${CYAN}${package}${BLUE} (${count}/${total})...${RESET}"
-            (sudo pacman -S --noconfirm "$package" > /dev/null 2>&1) & show_combined_progress "Instalando $package"
+            (sudo pacman -S --noconfirm "$packages" > /dev/null 2>&1) & show_combined_progress "Instalando $package"
             echo -e "${GREEN}✔ ${package} instalado correctamente.${RESET}\n"
         else
             echo -e "${YELLOW}➤ ${package} ya está instalado. Omintiendo.${RESET}\n"

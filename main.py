@@ -1,4 +1,5 @@
 import os
+from os import system
 import subprocess
 import time
 from datetime import datetime
@@ -32,6 +33,8 @@ def banner():
 ║                                            ║
 ╚════════════════════════════════════════════╝{RESET}
 """)
+os.system("sleep 2")
+os.system("clear")
 
 def log_event(event, level="info"):
     """Registra eventos en el archivo de log"""
@@ -52,7 +55,7 @@ def check_platform():
 
 def check_files_exist():
     """Verifica que los archivos necesarios existan"""
-    files = [".zshrc", ".p10k.zsh", "requirements.sh"]
+    files = [" .zshrc", ".p10k.zsh", "requirements.sh"]
     for file in files:
         if not os.path.exists(file):
             print(f"{RED}❌ Archivo no encontrado: {file}{RESET}")
