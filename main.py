@@ -77,7 +77,7 @@ def install_dependencies():
         check_files_exist()
         run_command("cp .zshrc ~ && cp .p10k.zsh ~")
         run_command("chmod +x requirements.sh")
-        run_command("sh ./requirements.sh")
+        run_command("sh requirements.sh")
         print(f"{GREEN}✅ Todos los requisitos han sido instalados.{RESET}")
         log_event("Dependencias instaladas correctamente.")
         time.sleep(3)
