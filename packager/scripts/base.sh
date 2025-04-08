@@ -48,27 +48,35 @@ loading_bar() {
     local pid=$!
     local delay=0.1
     local spinstr='|/-\'
-    printf "${CYAN}🔄 Instalando paquetes... "
     while kill -0 $pid 2>/dev/null; do
         local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
+        printf "\r ${CYAN}🔄 Instalando... [%c]${RESET} " "$spinstr"
         spinstr=$temp${spinstr%"$temp"}
         sleep $delay
-        printf "\b\b\b\b\b\b"
     done
-    printf " ${GREEN}✔️ Hecho${RESET}\n"
+    printf "\r ${GREEN}✔️ Instalación completada${RESET}\n"
+}
+
+# Verificar si un paquete está instalado
+is_installed() {
+    pacman -Q "$1" &> /dev/null
 }
 
 # Verifica que jq esté instalado
-if ! command -v jq &> /dev/null; then
-    echo -e "${CYAN}📦 Instalando jq...${RESET}"
-    sudo pacman -S jq --noconfirm
+if ! is_installed jq; then
+    echo -e "${CYAN}Instalando jq...${RESET}"
+    (sudo pacman -S jq --noconfirm) & loading_bar
 fi
 
 # Extraer paquetes únicos
 all_packages=$(echo "$json" | jq -r '.[] | .[]' | sort -u)
 
-# Instalar paquetes con barra animada
-(sudo pacman -S --noconfirm $all_packages) & loading_bar
-
-echo -e "${GREEN}🎉 Todos los paquetes han sido instalados correctamente.${RESET}"
+# Instalar paquetes no instalados con barra animada
+for package in $all_packages; do
+    if ! is_installed "$package"; then
+        echo -e "${CYAN}Instalando $package...${RESET}"
+        (sudo pacman -S --noconfirm "$package") & loading_bar
+    else
+        echo -e "${GREEN}$package ya está instalado. Ignorando.${RESET}"
+    fi
+done
